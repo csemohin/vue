@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="vue.min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script> -->
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-firestore.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <p class="txtCenter">
+          <input
+            type="text"
+            placeholder="Enter your name"
+            v-model="newUser.username"
+          />
+          <input
+            type="text"
+            placeholder="Email Address"
+            v-model="newUser.email"
+          />
+          <button class="add" @click="addUser()">Add</button>
+        </p>
+        <br />
+        <br />
+
+        <table>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+          <tr>
+            <td>Jhone</td>
+            <td>jhone@gmail.com</td>
+            <td>
+              <button class="edit">Edit</button>
+            </td>
+            <td>
+              <button class="delete">Delete</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var app = new Vue({
+        el: "#app",
+        data: {
+          newUser: {
+            username: "",
+            email: ""
+          },
+          dbRef: null
+        },
+        methods: {
+          addUser: function() {
+            this.dbRef.push(this.newUser);
+          }
+        },
+        mounted() {
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyCaCyDDRUvbQQt5pn5-vcn8uY4Ukh95uZQ",
+            authDomain: "vuecrud-f3e2c.firebaseapp.com",
+            databaseURL: "https://vuecrud-f3e2c.firebaseio.com",
+            projectId: "vuecrud-f3e2c",
+            storageBucket: "",
+            messagingSenderId: "1090805765994",
+            appId: "1:1090805765994:web:422e758c666218f2"
+          };
+          // Initialize Firebase
+          var firebaseApp = firebase.initializeApp(firebaseConfig);
+          debugger;
+          const db = firebase.firestore();
+          db.collection("users")
+            .add({
+              first: "Mohin",
+              last: "Uddin",
+              born: 1995
+            })
+            .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+              console.error("Error adding document: ", error);
+            });
+          // this.dbRef = firebase.database().ref("users");
+        }
+      });
+    </script>
+  </body>
+</html>
