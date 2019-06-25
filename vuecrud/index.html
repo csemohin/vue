@@ -9,14 +9,15 @@
     <script src="vue.min.js"></script>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script> -->
 
     <!-- Add Firebase products that you want to use -->
-    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-firestore.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-firestore.js"></script> -->
   </head>
   <body>
     <div id="app">
@@ -44,14 +45,14 @@
             <th>Edit</th>
             <th>Delete</th>
           </tr>
-          <tr>
-            <td>Jhone</td>
-            <td>jhone@gmail.com</td>
+          <tr v-for=" user in users">
+            <td>{{ user.val.username }}</td>
+            <td>{{ user.val.email }}</td>
             <td>
               <button class="edit">Edit</button>
             </td>
             <td>
-              <button class="delete">Delete</button>
+              <button class="delete" @click="deleteUser(users.key)">Delete</button>
             </td>
           </tr>
         </table>
@@ -66,11 +67,16 @@
             username: "",
             email: ""
           },
-          dbRef: null
+          dbRef: null,
+          users: []
         },
         methods: {
           addUser: function() {
             this.dbRef.push(this.newUser);
+            this.newUser = { username: "",email: ""};
+          },
+          deleteUser: function(key){
+            console.log(key);
           }
         },
         mounted() {
@@ -86,20 +92,33 @@
           };
           // Initialize Firebase
           var firebaseApp = firebase.initializeApp(firebaseConfig);
-          debugger;
-          const db = firebase.firestore();
-          db.collection("users")
-            .add({
-              first: "Mohin",
-              last: "Uddin",
-              born: 1995
-            })
-            .then(function(docRef) {
-              console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function(error) {
-              console.error("Error adding document: ", error);
+          this.dbRef = firebaseApp.database().ref("users");
+
+          var ci = this;
+          this.dbRef.on("value", function(snapshot) {
+            ci.users = [];
+            snapshot.forEach(function(childSnapshot) {
+              ci.users.push({
+                key: childSnapshot.key,
+                val: childSnapshot.val()
+              });
+              console.log(childSnapshot.val());
             });
+          });
+
+          // const db = firebase.firestore();
+          // db.collection("users")
+          //   .add({
+          //     first: "Mohin",
+          //     last: "Uddin",
+          //     born: 1995
+          //   })
+          //   .then(function(docRef) {
+          //     console.log("Document written with ID: ", docRef.id);
+          //   })
+          //   .catch(function(error) {
+          //     console.error("Error adding document: ", error);
+          //   });
           // this.dbRef = firebase.database().ref("users");
         }
       });
