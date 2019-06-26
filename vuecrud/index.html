@@ -52,7 +52,7 @@
               <button class="edit">Edit</button>
             </td>
             <td>
-              <button class="delete" @click="deleteUser(users.key)">Delete</button>
+              <button class="delete" @click="deleteUser(user.key)">Delete</button>
             </td>
           </tr>
         </table>
@@ -76,7 +76,8 @@
             this.newUser = { username: "",email: ""};
           },
           deleteUser: function(key){
-            console.log(key);
+            // console.log(key);
+            this.dbRef.child(key).remove();
           }
         },
         mounted() {
