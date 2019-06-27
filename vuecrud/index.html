@@ -46,10 +46,20 @@
             <th>Delete</th>
           </tr>
           <tr v-for=" user in users">
-            <td>{{ user.val.username }}</td>
-            <td>{{ user.val.email }}</td>
+
             <td>
-              <button class="edit">Edit</button>
+              <input type="text" v-if="selectedUser.key == user.key" v-model="selectedUser.val.username">
+              <p v-else>
+                  {{ user.val.username }}
+              </p>
+            </td>
+            <td>
+            <input type="text" v-if="selectedUser.key == user.key" v-model="selectedUser.val.email">
+              <p v-else>
+                  {{ user.val.email }}
+              </p>
+            <td>
+              <button class="edit" @click="selectedUser = user">Edit</button>
             </td>
             <td>
               <button class="delete" @click="deleteUser(user.key)">Delete</button>
@@ -68,7 +78,8 @@
             email: ""
           },
           dbRef: null,
-          users: []
+          users: [],
+          selectedUser: {}
         },
         methods: {
           addUser: function() {
