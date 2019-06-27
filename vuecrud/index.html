@@ -29,7 +29,7 @@
             v-model="newUser.username"
           />
           <input
-            type="text"
+            type="email"
             placeholder="Email Address"
             v-model="newUser.email"
           />
@@ -54,7 +54,7 @@
               </p>
             </td>
             <td>
-            <input type="text" v-if="selectedUser.key == user.key" v-model="selectedUser.val.email">
+            <input type="email" v-if="selectedUser.key == user.key" v-model="selectedUser.val.email">
               <p v-else>
                   {{ user.val.email }}
               </p>
