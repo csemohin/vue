@@ -31,7 +31,7 @@
           <input
             type="email"
             placeholder="Email Address"
-            v-model="newUser.email"
+            v-model="newUser.email" required
           />
           <button class="add" @click="addUser()">Add</button>
         </p>
@@ -59,7 +59,8 @@
                   {{ user.val.email }}
               </p>
             <td>
-              <button class="edit" @click="selectedUser = user">Edit</button>
+              <button class="edit" @click="selectedUser = user"  v-if="selectedUser.key != user.key">Edit</button>
+              <button class="edit" @click="updateUser()" v-else>Done</button>
             </td>
             <td>
               <button class="delete" @click="deleteUser(user.key)">Delete</button>
@@ -89,6 +90,9 @@
           deleteUser: function(key){
             // console.log(key);
             this.dbRef.child(key).remove();
+          },
+          updateUser: function(){
+              console.log(this.selectedUser.val);
           }
         },
         mounted() {
