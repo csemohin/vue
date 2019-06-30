@@ -60,7 +60,7 @@
               </p>
             <td>
               <button class="edit" @click="selectedUser = user"  v-if="selectedUser.key != user.key">Edit</button>
-              <button class="edit" @click="updateUser()" v-else>Done</button>
+              <button class="edit" @click="updateUser()" v-else>Update</button>
             </td>
             <td>
               <button class="delete" @click="deleteUser(user.key)">Delete</button>
@@ -92,7 +92,9 @@
             this.dbRef.child(key).remove();
           },
           updateUser: function(){
-              console.log(this.selectedUser.val);
+              //console.log(this.selectedUser.val);
+              this.dbRef.child(this.selectedUser.key).update(this.selectedUser.val);
+              this.selectedUser = {}
           }
         },
         mounted() {
